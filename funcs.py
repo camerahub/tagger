@@ -135,30 +135,30 @@ def apitag2exiftag(apitag):
     #'Lens',
     #'FNumber'
 
-    # Static mapping of tags
+    # Static mapping of tags from the short EXIF name
+    # to the fully qualified names required by pyexiv2
     mapping = {
-        'uuid': 'Exif.Photo.ImageUniqueID',
-        'negative.film.camera.cameramodel.manufacturer.name': 'Exif.Image.Make',
-        'negative.film.camera.cameramodel.lens_manufacturer': 'Exif.Photo.LensMake',
-        'negative.film.camera.cameramodel.model': 'Exif.Image.Model',
-        'negative.film.camera.serial': 'Exif.Photo.BodySerialNumber',
-        'negative.film.exposed_at': 'Exif.Photo.ISOSpeed',
-        'negative.lens.lensmodel.model': 'Exif.Photo.LensModel',
-        'negative.lens.lensmodel.manufacturer.name': 'Exif.Photo.LensModel',
-        'negative.exposure_program': 'Exif.Image.ExposureProgram',
-        'negative.metering_mode': 'Exif.Image.MeteringMode',
-        'negative.caption': 'Exif.Image.ImageDescription',
-        'negative.date': 'Exif.Image.DateTimeOriginal',
-        'negative.aperture': 'Exif.Image.FNumber',
-        'negative.notes': 'Exif.Photo.UserComment',
-        'negative.focal_length': 'Exif.Image.FocalLength',
-        'negative.flash': 'Exif.Image.Flash',
-        'negative.photographer.name': 'Exif.Image.Artist',
-        'negative.lens.serial': 'Exif.Photo.LensSerialNumber',
-        'negative.shutter_speed': 'ShutterSpeedValue',
-        'negative.lens.lensmodel.max_aperture': 'Exif.Image.MaxApertureValue',
-        'negative.copyright': 'Exif.Image.Copyright',
-        'negative.focal_length_35mm': 'Exif.Photo.FocalLengthIn35mmFilm',
+        'ImageUniqueID': 'Exif.Photo.ImageUniqueID',
+        'Make': 'Exif.Image.Make',
+        'LensMake': 'Exif.Photo.LensMake',
+        'Model': 'Exif.Image.Model',
+        'BodySerialNumber': 'Exif.Photo.BodySerialNumber',
+        'ISOSpeed': 'Exif.Photo.ISOSpeed',
+        'LensModel': 'Exif.Photo.LensModel',
+        'ExposureProgram': 'Exif.Image.ExposureProgram',
+        'MeteringMode': 'Exif.Image.MeteringMode',
+        'ImageDescription': 'Exif.Image.ImageDescription',
+        'DateTimeOriginal': 'Exif.Image.DateTimeOriginal',
+        'FNumber': 'Exif.Image.FNumber',
+        'UserComment': 'Exif.Photo.UserComment',
+        'FocalLength': 'Exif.Image.FocalLength',
+        'Flash': 'Exif.Image.Flash',
+        'Artist': 'Exif.Image.Artist',
+        'LensSerialNumber': 'Exif.Photo.LensSerialNumber',
+        'ShutterSpeedValue': 'ShutterSpeedValue',
+        'MaxApertureValue': 'Exif.Image.MaxApertureValue',
+        'Copyright': 'Exif.Image.Copyright',
+        'FocalLengthIn35mmFilm': 'Exif.Photo.FocalLengthIn35mmFilm',
     }
 
     exiftag = mapping.get(apitag)
