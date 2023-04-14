@@ -3,11 +3,10 @@ CameraHub Tagger
 """
 
 import argparse
-import sys
 import os
 from fnmatch import filter as fnfilter
 import pprint
-from exif import Image
+import pyexiv2
 from requests.models import HTTPError
 from funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no
 from config import get_setting
@@ -46,8 +45,7 @@ if __name__ == '__main__':
     except:
         print("Creds not OK")
         raise PermissionError
-    else:
-        print("Creds OK")
+    print("Creds OK")
 
 
     # if no args, scan current folder. consider recursive option
@@ -65,7 +63,6 @@ if __name__ == '__main__':
 
     if len(files) == 0:
         print("No files found")
-        sys.exit
 
     # foreach found photo:
     # read exif data, check for camerahub scan tag
@@ -73,14 +70,17 @@ if __name__ == '__main__':
         print(f"Processing image {file}")
 
         # Extract exif data from file
-        with open(file, 'rb') as image_file:
-            image = Image(image_file)
+        with pyexiv2.Image(file) as img:
+            existing = img.read_exif()
 
-        if image.has_exif is True and image.get("image_unique_id") and is_valid_uuid(image.image_unique_id):
+        # Example format
+        # existing = {'Exif.Image.DateTime': '2019:06:23 19:45:17', 'Exif.Image.Artist': 'TEST', 'Exif.Image.Rating': '4', ...}
+
+        if existing is not None and 'Exif.Photo.ImageUniqueID' in existing and is_valid_uuid(existing['Exif.Photo.ImageUniqueID']):
             # check for presence of custom exif tag for camerahub
             # already has a uuid scan id
             print(f"{file} already has an EXIF scan ID")
-            scan = image.get("image_unique_id")
+            scan = existing['Exif.Photo.ImageUniqueID']
         else:
             # need to match it with a neg/print and generate a scan id
             print(f"{file} does not have an EXIF scan ID")
@@ -131,7 +131,6 @@ if __name__ == '__main__':
         exifdata = api2exif(apidata)
 
         # prepare diff of tags
-        existing = image.get_all()
         diff = diff_tags(existing, exifdata)
 
         # if non-zero diff, ask user to confirm tag write
@@ -143,9 +142,5 @@ if __name__ == '__main__':
             if not args.dry_run and yes_or_no("Write this metadata to the file?"):
 
                 # Apply the diff to the image
-                for key, value in diff.items():
-                    image.set(key, value)
-
-                # do the write
-                with open(file, 'wb') as image_file:
-                    image_file.write(image.get_file())
+                with pyexiv2.Image(file) as img:
+                    img.modify_exif(diff)

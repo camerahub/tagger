@@ -17,7 +17,8 @@ def test_credentials(l_server, l_auth):
 
     response = requests.get(
             l_server+'/camera',
-            auth=l_auth
+            auth=l_auth,
+            timeout=10
         )
 
     return bool(response.status_code == 200)
@@ -41,7 +42,12 @@ def create_scan(l_negative, l_filename, l_server, l_auth):
         'filename': l_filename,
         'date': date.today()}
     url = l_server+'/scan/'
-    response = requests.post(url, auth=l_auth, data = data)
+    response = requests.post(
+        url,
+        auth=l_auth,
+        data = data,
+        timeout=10
+    )
     response.raise_for_status()
     data=json.loads(response.text)
     return data["uuid"]
@@ -52,8 +58,13 @@ def get_scan(l_scan, l_server, l_auth):
     Get all details about a scan record in CameraHub
     """
     payload = {'uuid': l_scan}
-    url = l_server+'/scan/'
-    response = requests.get(url, auth=l_auth, params=payload)
+    url = l_server+'/exif/'
+    response = requests.get(
+        url,
+        auth=l_auth,
+        params=payload,
+        timeout=10
+    )
     response.raise_for_status()
 
     data=json.loads(response.text)
@@ -67,10 +78,15 @@ def get_negative(l_film, l_frame, l_server, l_auth):
     """
     Find the negative slug for a negative based on its film slug and frame
     """
-    # TODO: complete this function with API lookup
-    payload = {'film': l_film, 'frame': l_frame}
+    slug = f"{l_film}.{l_frame}"
+    payload = {'slug': slug}
     url = l_server+'/negative/'
-    response = requests.get(url, auth=l_auth, params=payload)
+    response = requests.get(
+        url,
+        auth=l_auth,
+        params=payload,
+        timeout=10
+    )
     response.raise_for_status()
 
     data=json.loads(response.text)
