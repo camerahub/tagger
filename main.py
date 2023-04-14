@@ -5,8 +5,8 @@ CameraHub Tagger
 import argparse
 import os
 from fnmatch import filter as fnfilter
-import pprint
 import pyexiv2
+from deepdiff import DeepDiff
 from requests.models import HTTPError
 from funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no
 from config import get_setting
@@ -131,17 +131,18 @@ if __name__ == '__main__':
         exifdata = api2exif(apidata)
 
         # prepare diff of tags
-        diff = diff_tags(existing, exifdata)
+        deepdiff = DeepDiff(exifdata, existing)
+        prettydiff = deepdiff.pretty()
+        diff = deepdiff.to_dict()
 
         # if non-zero diff, ask user to confirm tag write
         if len(diff) > 0:
             # print diff & confirm write
-            pp = pprint.PrettyPrinter()
-            pp.pprint(diff)
+            print(prettydiff)
 
             if not args.dry_run:
                 if args.yes or yes_or_no("Write this metadata to the file?"):
 
                     # Apply the diff to the image
                     with pyexiv2.Image(file) as img:
-                        img.modify_exif(diff)
+                        img.modify_exif(exifdata)

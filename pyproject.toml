@@ -9,6 +9,7 @@ python = "^3.9"
 requests = "^2.26.0"
 pyexiv2 = "^2.8.1"
 uuid = "^1.30"
+deepdiff = "^6.3.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.0"
