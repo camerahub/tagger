@@ -3,7 +3,6 @@ CameraHub Tagger
 """
 
 import argparse
-import sys
 import os
 from fnmatch import filter as fnfilter
 import pprint
@@ -46,8 +45,7 @@ if __name__ == '__main__':
     except:
         print("Creds not OK")
         raise PermissionError
-    else:
-        print("Creds OK")
+    print("Creds OK")
 
 
     # if no args, scan current folder. consider recursive option
@@ -65,7 +63,6 @@ if __name__ == '__main__':
 
     if len(files) == 0:
         print("No files found")
-        sys.exit
 
     # foreach found photo:
     # read exif data, check for camerahub scan tag
