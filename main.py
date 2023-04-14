@@ -139,8 +139,9 @@ if __name__ == '__main__':
             pp = pprint.PrettyPrinter()
             pp.pprint(diff)
 
-            if not args.dry_run and yes_or_no("Write this metadata to the file?"):
+            if not args.dry_run:
+                if args.yes or yes_or_no("Write this metadata to the file?"):
 
-                # Apply the diff to the image
-                with pyexiv2.Image(file) as img:
-                    img.modify_exif(diff)
+                    # Apply the diff to the image
+                    with pyexiv2.Image(file) as img:
+                        img.modify_exif(diff)
