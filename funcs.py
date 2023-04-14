@@ -135,30 +135,30 @@ def apitag2exiftag(apitag):
     #'Lens',
     #'FNumber'
 
-    # Static mapping of tags
+    # Static mapping of tags from the short EXIF name
+    # to the fully qualified names required by pyexiv2
     mapping = {
-        'uuid': 'image_unique_id',
-        'negative.film.camera.cameramodel.manufacturer.name': 'make',
-        'negative.film.camera.cameramodel.lens_manufacturer': 'lens_make',
-        'negative.film.camera.cameramodel.model': 'model',
-        'negative.film.camera.serial': 'body_serial_number',
-        'negative.film.exposed_at': 'iso_speed',
-        'negative.lens.lensmodel.model': 'lens_model',
-        'negative.lens.lensmodel.manufacturer.name': 'lens_make',
-        'negative.exposure_program': 'exposure_program',
-        'negative.metering_mode': 'metering_mode',
-        'negative.caption': 'image_description',
-        'negative.date': 'datetime_original',
-        'negative.aperture': 'f_number',
-        'negative.notes': 'user_comment',
-        'negative.focal_length': 'focal_length',
-        'negative.flash': 'flash',
-        'negative.photographer.name': 'artist',
-        'negative.lens.serial': 'lens_serial_number',
-        'negative.shutter_speed': 'shutter_speed_value',
-        'negative.lens.lensmodel.max_aperture': 'max_aperture_value',
-        'negative.copyright': 'copyright',
-        'negative.focal_length_35mm': 'focal_length_in_35mm_film',
+        'ImageUniqueID': 'Exif.Photo.ImageUniqueID',
+        'Make': 'Exif.Image.Make',
+        'LensMake': 'Exif.Photo.LensMake',
+        'Model': 'Exif.Image.Model',
+        'BodySerialNumber': 'Exif.Photo.BodySerialNumber',
+        'ISOSpeed': 'Exif.Photo.ISOSpeed',
+        'LensModel': 'Exif.Photo.LensModel',
+        'ExposureProgram': 'Exif.Image.ExposureProgram',
+        'MeteringMode': 'Exif.Image.MeteringMode',
+        'ImageDescription': 'Exif.Image.ImageDescription',
+        'DateTimeOriginal': 'Exif.Image.DateTimeOriginal',
+        'FNumber': 'Exif.Image.FNumber',
+        'UserComment': 'Exif.Photo.UserComment',
+        'FocalLength': 'Exif.Image.FocalLength',
+        'Flash': 'Exif.Image.Flash',
+        'Artist': 'Exif.Image.Artist',
+        'LensSerialNumber': 'Exif.Photo.LensSerialNumber',
+        'ShutterSpeedValue': 'ShutterSpeedValue',
+        'MaxApertureValue': 'Exif.Image.MaxApertureValue',
+        'Copyright': 'Exif.Image.Copyright',
+        'FocalLengthIn35mmFilm': 'Exif.Photo.FocalLengthIn35mmFilm',
     }
 
     exiftag = mapping.get(apitag)
@@ -189,11 +189,11 @@ def api2exif(l_apidata):
 
             # Check for "special" tags that need computation
             if key == 'negative.latitude':
-                l_exifdata['gps_latitude'] = deg_to_dms(value)
-                l_exifdata['gps_latitude_ref'] = gps_ref('latitude', value)
+                l_exifdata['Exif.GPSInfo.GPSLatitude'] = deg_to_dms(value)
+                l_exifdata['Exif.GPSInfo.GPSLatitudeRef'] = gps_ref('latitude', value)
             elif key == 'negative.longitude':
-                l_exifdata['gps_longitude'] = deg_to_dms(value)
-                l_exifdata['gps_longitude_ref'] = gps_ref('longitude', value)
+                l_exifdata['Exif.GPSInfo.GPSLongitude'] = deg_to_dms(value)
+                l_exifdata['Exif.GPSInfo.GPSLongitudeRef'] = gps_ref('longitude', value)
             else:
                 # Otherwise do a 1:1 mapping
                 exifkey = apitag2exiftag(key)

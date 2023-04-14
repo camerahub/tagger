@@ -50,17 +50,6 @@ python-versions = ">=3.7"
 graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
-name = "exif"
-version = "1.6.0"
-description = "Read and modify image EXIF metadata using Python."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-plum-py = ">=0.5.0,<2.0.0"
-
-[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -111,12 +100,12 @@ docs = ["furo (>=2022.12.7)", "proselint (>=0.13)", "sphinx-autodoc-typehints (>
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest-cov (>=4)", "pytest-mock (>=3.10)", "pytest (>=7.2.2)"]
 
 [[package]]
-name = "plum-py"
-version = "0.8.6"
-description = "Pack/Unpack Memory."
+name = "pyexiv2"
+version = "2.8.1"
+description = "Read/Write metadata(including EXIF, IPTC, XMP), comment and ICC Profile embedded in digital images."
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.5"
 
 [[package]]
 name = "pylint"
@@ -218,7 +207,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "914ca4532c51ed188454732110c535a95860f53fbc7cc41ebabfeeec512faea2"
+content-hash = "bd15f492fe9c0892c132be87c5cd5c614d09c55ce087d3aab3c4b58028520d89"
 
 [metadata.files]
 astroid = [
@@ -308,10 +297,6 @@ charset-normalizer = [
 ]
 colorama = []
 dill = []
-exif = [
-    {file = "exif-1.6.0-py3-none-any.whl", hash = "sha256:2d002b5740eb897da43de1e6a8f4ebacf5171b4d0b8bc0182c70aebde1be86d3"},
-    {file = "exif-1.6.0.tar.gz", hash = "sha256:36288d1ffc60030084a04c26f50cc32e19383a36cd234fcfa1fb1c6f698e1d36"},
-]
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
@@ -366,8 +351,28 @@ platformdirs = [
     {file = "platformdirs-3.2.0-py3-none-any.whl", hash = "sha256:ebe11c0d7a805086e99506aa331612429a72ca7cd52a1f0d277dc4adc20cb10e"},
     {file = "platformdirs-3.2.0.tar.gz", hash = "sha256:d5b638ca397f25f979350ff789db335903d7ea010ab28903f57b27e1b16c2b08"},
 ]
-plum-py = [
-    {file = "plum_py-0.8.6-py3-none-any.whl", hash = "sha256:c0ce6d03fc4bf09dbd838b520085e9dfb690d1604f3eb7a553fb6331c1155b78"},
+pyexiv2 = [
+    {file = "pyexiv2-2.8.1-cp310-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:1133b63bc66dc4ee0d958394d46cc371f63570530dcd6c95ff0986c39ad9bab6"},
+    {file = "pyexiv2-2.8.1-cp310-none-manylinux2014_x86_64.whl", hash = "sha256:8b115cb16fd543408d61c1cbd4d0e661f31b6502a6971fe22e63773d689903fb"},
+    {file = "pyexiv2-2.8.1-cp310-none-win_amd64.whl", hash = "sha256:0737e81373abb0966685063f8399a91a05dd4e978d93622cee3d11b696f031ab"},
+    {file = "pyexiv2-2.8.1-cp311-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:b92e61c49addd27a07133dcca61425e1d75f3f937de504e7c2b4680fabf88008"},
+    {file = "pyexiv2-2.8.1-cp311-none-manylinux2014_x86_64.whl", hash = "sha256:d5eb6003a8dede4e97befc254c6af3bc1adad056254742510a1b990acf627cac"},
+    {file = "pyexiv2-2.8.1-cp311-none-win_amd64.whl", hash = "sha256:35833a98302ada1e98960823ea09dfa12612c5de2c0f8edd3dab6facaa12d64b"},
+    {file = "pyexiv2-2.8.1-cp35-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:c3070208251f8db985dc23879492144f67796e97c4cbe4d7b705e5a85ce3ce39"},
+    {file = "pyexiv2-2.8.1-cp35-none-manylinux2014_x86_64.whl", hash = "sha256:e8dfdbdc32b68991c79c8c434cb956f5a78cdbe180c0cbb61905588560613956"},
+    {file = "pyexiv2-2.8.1-cp35-none-win_amd64.whl", hash = "sha256:a8aa0c9e102ce8e17aa60ef597d355c13b730aa47df01e5fccef8fb73c04e822"},
+    {file = "pyexiv2-2.8.1-cp36-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:c76f90b69067b2fb047e807fc40c76e81a9a1b691604634b6fbc934f6fea64fd"},
+    {file = "pyexiv2-2.8.1-cp36-none-manylinux2014_x86_64.whl", hash = "sha256:8726df6c0ad5b4e9a052dc18db8a397c3412d4a6d22b58c846a9093f0777176d"},
+    {file = "pyexiv2-2.8.1-cp36-none-win_amd64.whl", hash = "sha256:13e224b500b63018f7c58d154eeb770f5d39c4c06c02341e93780b00b83e55fb"},
+    {file = "pyexiv2-2.8.1-cp37-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:65aca28c3b28a6a395bef484578eb167cdbd709f021147d844924b24c0ce4bd6"},
+    {file = "pyexiv2-2.8.1-cp37-none-manylinux2014_x86_64.whl", hash = "sha256:7947f233e6790412dbb51714e795531cca48db8c9e0d85216c729ae0ff578ef5"},
+    {file = "pyexiv2-2.8.1-cp37-none-win_amd64.whl", hash = "sha256:32c11eb6b725f5a870400cd733ace83d5a16a7260bd4918596a745d517d21dda"},
+    {file = "pyexiv2-2.8.1-cp38-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:0982404a1932115fd001c148ceb14ac5be570d4312e3e5ba42ef90a0231f8278"},
+    {file = "pyexiv2-2.8.1-cp38-none-manylinux2014_x86_64.whl", hash = "sha256:1b7a26481bed04e223a905ec1f1b1bc9b1d1c88653c7c4ee94bd35f22582cdaf"},
+    {file = "pyexiv2-2.8.1-cp38-none-win_amd64.whl", hash = "sha256:150ab423a9addf642309be2dc2ac820d7f8e08a6b72bc2e2fef3abdba480284a"},
+    {file = "pyexiv2-2.8.1-cp39-none-macosx_10_14_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:5626b6f69ea5da685692410dfe8dba05c286ffc55aebccd76300bade6c84c3ec"},
+    {file = "pyexiv2-2.8.1-cp39-none-manylinux2014_x86_64.whl", hash = "sha256:de719c05592ccf78aa444484c614b58e2f6c1d54825a21bb2a0c922b4534f9da"},
+    {file = "pyexiv2-2.8.1-cp39-none-win_amd64.whl", hash = "sha256:b2d31ca96bfda2ba3bd7bcbdf798f4ca2e8b0ee4786974b34391f376acdbbd32"},
 ]
 pylint = [
     {file = "pylint-2.17.2-py3-none-any.whl", hash = "sha256:001cc91366a7df2970941d7e6bbefcbf98694e00102c1f121c531a814ddc2ea8"},
