@@ -88,7 +88,7 @@ if __name__ == '__main__':
             # else prompt user to identify the scan
             #	guess film/frame from filename
             guess = guess_frame(file)
-            if guess:
+            if type(guess) is tuple:
                 film, frame = guess
                 print(f"Deduced Film ID {film} and Frame {frame}")
 

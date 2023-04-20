@@ -5,6 +5,7 @@ Utility functions with few external dependencies
 from decimal import Decimal
 from deepdiff import DeepDiff
 from uuid import UUID
+from os.path import basename
 import re
 
 def deg_to_dms(degrees):
@@ -104,15 +105,16 @@ def is_valid_uuid(uuid_to_test, version=4):
     return str(uuid_obj) == uuid_to_test
 
 
-def guess_frame(filename):
+def guess_frame(filepath):
     """
     Guess a negative's film id and frame id based on its filename
     Assumes a format of [film]-[frame]-title.jpg
     for example 123-22-holiday.jpg
     """
+    filename = basename(filepath)
     match = re.search(r'^(\d+)-(\d+).*\.jpe?g$', filename.lower())
-    if match and match.group(0) and match.group(1):
-        returnval = (match.group(0), match.group(1))
+    if match and match.group(1) and match.group(2):
+        returnval = (match.group(1), match.group(2))
     else:
         returnval = None
     return returnval
