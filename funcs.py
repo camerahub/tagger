@@ -3,6 +3,7 @@ Utility functions with few external dependencies
 """
 
 from decimal import Decimal
+from deepdiff import DeepDiff
 from uuid import UUID
 import re
 
@@ -201,6 +202,18 @@ def api2exif(l_apidata):
                 # Otherwise do a 1:1 mapping
                 exifkey = apitag2exiftag(key)
                 if exifkey is not None:
-                    l_exifdata[exifkey] = value
+                    l_exifdata[exifkey] = str(value)
+
+    #Type of root['Exif.Photo.Flash'] changed from str to int and value changed from "0" to 0.
+    #l_exifdata['Exif.Photo.Flash'] = str(l_exifdata['Exif.Photo.Flash'])
+    #Type of root['Exif.Photo.ExposureIndex'] changed from str to int and value changed from "" to 200.
+    #l_exifdata['Exif.Photo.ExposureIndex'] = str(l_exifdata['Exif.Photo.ExposureIndex'])+'/1'
+    #Value of root['Exif.Photo.ExposureTime'] changed from "" to "0.01667000".
+    #l_exifdata['Exif.Photo.ExposureTime'] = str(l_exifdata['Exif.Photo.ExposureTime'])
+    #Value of root['Exif.Photo.FocalLengthIn35mmFilm'] changed from "" to "50.0".
+    #l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'])
+    #Value of root['Exif.Image.FocalLength'] changed from "" to "50.0".
+    l_exifdata['Exif.Image.FocalLength'] = str(int(l_exifdata['Exif.Image.FocalLength']))+'/1'
+    l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(int(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm']))+'/1'
 
     return l_exifdata
