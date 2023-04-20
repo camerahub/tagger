@@ -2,10 +2,10 @@
 Utility functions with few external dependencies
 """
 
-from deepdiff import DeepDiff
 from uuid import UUID
 from os.path import basename
 import re
+from deepdiff import DeepDiff
 
 
 def diff_tags(dicta, dictb):

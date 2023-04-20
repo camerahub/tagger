@@ -6,7 +6,6 @@ import argparse
 import os
 from fnmatch import filter as fnfilter
 import pyexiv2
-from deepdiff import DeepDiff
 from requests.models import HTTPError
 from funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no
 from config import get_setting
