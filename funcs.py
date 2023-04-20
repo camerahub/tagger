@@ -2,35 +2,10 @@
 Utility functions with few external dependencies
 """
 
-from decimal import Decimal
 from deepdiff import DeepDiff
 from uuid import UUID
 from os.path import basename
 import re
-
-def deg_to_dms(degrees):
-    """
-    Convert from decimal degrees to degrees, minutes, seconds.
-    """
-    degrees = Decimal(degrees)
-    mins, secs = divmod(abs(degrees)*3600, 60)
-    degs, mins = divmod(mins, 60)
-    degs, mins = int(degs), int(mins)
-    return degs, mins, secs
-
-
-def gps_ref(direction, angle):
-    """
-    Return the direction of a GPS coordinate
-    """
-    angle=Decimal(angle)
-    if direction == 'latitude':
-        hemi = 'N' if angle>=0 else 'S'
-    elif direction == 'longitude':
-        hemi = 'E' if angle>=0 else 'W'
-    else:
-        hemi = None
-    return hemi
 
 
 def diff_tags(dicta, dictb):
@@ -161,10 +136,15 @@ def apitag2exiftag(apitag):
         'Flash': 'Exif.Photo.Flash',
         'Artist': 'Exif.Image.Artist',
         'LensSerialNumber': 'Exif.Photo.LensSerialNumber',
-        'ShutterSpeedValue': 'Exif.Photo.ExposureTime',
+        'ExposureTime': 'Exif.Photo.ExposureTime',
+        #'ShutterSpeedValue': 'Exif.Photo.ShutterSpeedValue',
         'MaxApertureValue': 'Exif.Image.MaxApertureValue',
         'Copyright': 'Exif.Image.Copyright',
         'FocalLengthIn35mmFilm': 'Exif.Photo.FocalLengthIn35mmFilm',
+        'GPSLatitude': 'Exif.GPSInfo.GPSLatitude',
+        'GPSLatitudeRef': 'Exif.GPSInfo.GPSLatitudeRef',
+        'GPSLongitude': 'Exif.GPSInfo.GPSLongitude',
+        'GPSLongitudeRef': 'Exif.GPSInfo.GPSLongitudeRef',
     }
 
     exiftag = mapping.get(apitag)
@@ -193,19 +173,11 @@ def api2exif(l_apidata):
         if value is not None:
             key = ('.'.join(row))
 
-            # Check for "special" tags that need computation
-            if key == 'negative.latitude':
-                l_exifdata['Exif.GPSInfo.GPSLatitude'] = deg_to_dms(value)
-                l_exifdata['Exif.GPSInfo.GPSLatitudeRef'] = gps_ref('latitude', value)
-            elif key == 'negative.longitude':
-                l_exifdata['Exif.GPSInfo.GPSLongitude'] = deg_to_dms(value)
-                l_exifdata['Exif.GPSInfo.GPSLongitudeRef'] = gps_ref('longitude', value)
-            else:
-                # Otherwise do a 1:1 mapping
-                exifkey = apitag2exiftag(key)
-                if exifkey is not None:
-                    # Cast all keys as strings
-                    l_exifdata[exifkey] = str(value)
+            # Do a mapping using the key lookup table
+            exifkey = apitag2exiftag(key)
+            if exifkey is not None:
+                # Cast all keys as strings
+                l_exifdata[exifkey] = str(value)
 
     # Rationals need specialist handling
     if 'Exif.Image.FocalLength' in l_exifdata:
