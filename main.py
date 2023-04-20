@@ -129,11 +129,12 @@ if __name__ == '__main__':
 
         # mangle CameraHub format tags into EXIF format tags
         exifdata = api2exif(apidata)
+        print(exifdata)
 
         # prepare diff of tags
-        deepdiff = DeepDiff(exifdata, existing)
-        prettydiff = deepdiff.pretty()
-        diff = deepdiff.to_dict()
+        diff = diff_tags(existing, exifdata)
+        prettydiff = diff.pretty()
+        diff = diff.to_dict()
 
         # if non-zero diff, ask user to confirm tag write
         if len(diff) > 0:

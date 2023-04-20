@@ -35,12 +35,15 @@ def diff_tags(dicta, dictb):
     """
     Compare two dictionaries of EXIF tags and return a dictionary which contains
     the diff required to apply b's data to a, without destroying data in a.
-    This uses a symmetric difference operator:
-    https://docs.python.org/3/library/stdtypes.html#frozenset.symmetric_difference
     """
-    seta = set(dicta.items())
-    setb = set(dictb.items())
-    return dict(seta ^ setb)
+
+    # First merge/overwrite b into a copy of a
+    merged = dicta | dictb
+
+    # Now diff a with the merged dict
+    deepdiff = DeepDiff(dicta, merged)
+
+    return deepdiff
 
 
 def walk(indict, pre=None):
