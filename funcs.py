@@ -202,18 +202,14 @@ def api2exif(l_apidata):
                 # Otherwise do a 1:1 mapping
                 exifkey = apitag2exiftag(key)
                 if exifkey is not None:
+                    # Cast all keys as strings
                     l_exifdata[exifkey] = str(value)
 
-    #Type of root['Exif.Photo.Flash'] changed from str to int and value changed from "0" to 0.
-    #l_exifdata['Exif.Photo.Flash'] = str(l_exifdata['Exif.Photo.Flash'])
-    #Type of root['Exif.Photo.ExposureIndex'] changed from str to int and value changed from "" to 200.
-    #l_exifdata['Exif.Photo.ExposureIndex'] = str(l_exifdata['Exif.Photo.ExposureIndex'])+'/1'
-    #Value of root['Exif.Photo.ExposureTime'] changed from "" to "0.01667000".
-    #l_exifdata['Exif.Photo.ExposureTime'] = str(l_exifdata['Exif.Photo.ExposureTime'])
-    #Value of root['Exif.Photo.FocalLengthIn35mmFilm'] changed from "" to "50.0".
-    #l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'])
-    #Value of root['Exif.Image.FocalLength'] changed from "" to "50.0".
-    l_exifdata['Exif.Image.FocalLength'] = str(int(l_exifdata['Exif.Image.FocalLength']))+'/1'
-    l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(int(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm']))+'/1'
+    # Rationals need specialist handling
+    if 'Exif.Image.FocalLength' in l_exifdata:
+        l_exifdata['Exif.Image.FocalLength'] = str(int(float(l_exifdata['Exif.Image.FocalLength'])))+'/1'
+
+    if 'Exif.Photo.FocalLengthIn35mmFilm' in l_exifdata:
+        l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(int(float(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'])))+'/1'
 
     return l_exifdata
