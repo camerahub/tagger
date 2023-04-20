@@ -129,7 +129,6 @@ if __name__ == '__main__':
 
         # mangle CameraHub format tags into EXIF format tags
         exifdata = api2exif(apidata)
-        print(exifdata)
 
         # prepare diff of tags
         diff = diff_tags(existing, exifdata)
