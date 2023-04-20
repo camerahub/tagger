@@ -113,9 +113,6 @@ def apitag2exiftag(apitag):
     https://exif.readthedocs.io/en/latest/api_reference.html#image-attributes
     """
 
-    #'Lens',
-    #'FNumber'
-
     # Static mapping of tags from the short EXIF name
     # to the fully qualified names required by pyexiv2
     mapping = {
@@ -178,12 +175,5 @@ def api2exif(l_apidata):
             if exifkey is not None:
                 # Cast all keys as strings
                 l_exifdata[exifkey] = str(value)
-
-    # Rationals need specialist handling
-    if 'Exif.Image.FocalLength' in l_exifdata:
-        l_exifdata['Exif.Image.FocalLength'] = str(int(float(l_exifdata['Exif.Image.FocalLength'])))+'/1'
-
-    if 'Exif.Photo.FocalLengthIn35mmFilm' in l_exifdata:
-        l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'] = str(int(float(l_exifdata['Exif.Photo.FocalLengthIn35mmFilm'])))+'/1'
 
     return l_exifdata
