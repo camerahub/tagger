@@ -146,7 +146,7 @@ def apitag2exiftag(apitag):
         'LensMake': 'Exif.Photo.LensMake',
         'Model': 'Exif.Image.Model',
         'BodySerialNumber': 'Exif.Photo.BodySerialNumber',
-        'ISOSpeed': 'Exif.Photo.ExposureIndex',
+        'ISOSpeed': 'Exif.Photo.ISOSpeed',
         'LensModel': 'Exif.Photo.LensModel',
         'ExposureProgram': 'Exif.Image.ExposureProgram',
         'MeteringMode': 'Exif.Image.MeteringMode',
