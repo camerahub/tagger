@@ -1,6 +1,6 @@
 # CameraHub Tagger
 
-Command-line app to tag JPG scans of negatives with EXIF metadata from the CameraHub API.
+Companion command-line app for CameraHub to tag JPG scans of negatives with EXIF metadata from the CameraHub API.
 This means you can organise your film scans in a digital photo management app with full metadata.
 
 ## Installation
