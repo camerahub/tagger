@@ -12,7 +12,7 @@ uuid = "^1.30"
 deepdiff = "^6.3.0"
 
 [tool.poetry.scripts]
-tagger = 'camerahub-tagger.main:main'
+tagger = 'camerahub_tagger.main:main'
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.0"
