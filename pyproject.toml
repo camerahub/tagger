@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "camerahub-tagger"
-version = "0.1.0"
+version = "0.0.0"
 description = "EXIF tagger for CameraHub"
 authors = ["Jonathan Gazeley <me@jonathangazeley.com>"]
 
@@ -12,7 +12,7 @@ uuid = "^1.30"
 deepdiff = "^6.3.0"
 
 [tool.poetry.scripts]
-tagger = 'tagger.main:main'
+tagger = 'camerahub-tagger.main:main'
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.0"
