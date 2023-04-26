@@ -3,6 +3,10 @@ name = "camerahub-tagger"
 version = "0.0.0"
 description = "EXIF tagger for CameraHub"
 authors = ["Jonathan Gazeley <me@jonathangazeley.com>"]
+repository = "https://github.com/camerahub/tagger"
+homepage = "https://camerahub.info/"
+readme = ["README.md"]
+keywords = ["EXIF", "photography", "CameraHub", "metadata"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
