@@ -12,7 +12,7 @@ from config import get_setting
 from api import get_negative, get_scan, create_scan, test_credentials
 
 # ----------------------------------------------------------------------
-if __name__ == '__main__':
+def main():
     print("CameraHub Tagger")
 
     # Read in args
@@ -145,3 +145,6 @@ if __name__ == '__main__':
                     # Apply the diff to the image
                     with pyexiv2.Image(file) as img:
                         img.modify_exif(exifdata)
+
+if __name__ == "__main__":
+    main()
