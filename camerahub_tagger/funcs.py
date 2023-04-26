@@ -125,7 +125,7 @@ def apitag2exiftag(apitag):
         'LensModel': 'Exif.Photo.LensModel',
         'ExposureProgram': 'Exif.Photo.ExposureProgram',
         'MeteringMode': 'Exif.Photo.MeteringMode',
-        'ImageDescription': 'Exif.Photo.UserComment',
+        'ImageDescription': 'Exif.Photo.ImageDescription',
         'DateTimeOriginal': 'Exif.Photo.DateTimeOriginal',
         'FNumber': 'Exif.Photo.FNumber',
         'UserComment': 'Exif.Photo.UserComment',
