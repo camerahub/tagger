@@ -17,11 +17,11 @@ def main():
 
     # Read in args
     parser = argparse.ArgumentParser()
-    parser.add_argument('-r', '--recursive', help="search for scans recursively", action='store_true')
-    parser.add_argument('-a', '--auto', help="don't prompt user to identify scans, only guess based on filename", action='store_true')
-    parser.add_argument('-y', '--yes', help="accept all changes", action='store_true')
-    parser.add_argument('-d', '--dry-run', help="don't write any tags", action='store_true')
-    parser.add_argument('-f', '--file', help="image file to be tagged", type=str)
+    parser.add_argument('-r', '--recursive', help="Search for scans recursively", action='store_true')
+    parser.add_argument('-a', '--auto', help="Don't prompt user to identify scans, only guess based on filename", action='store_true')
+    parser.add_argument('-y', '--yes', help="Accept all changes without confirmation", action='store_true')
+    parser.add_argument('-d', '--dry-run', help="Don't write any tags to image files", action='store_true')
+    parser.add_argument('-f', '--file', help="Image file to be tagged. If not supplied, tag everything in the current directory.", type=str)
     parser.add_argument('-p', '--profile', help="CameraHub connection profile", default='prod', type=str)
     args = parser.parse_args()
 
