@@ -134,7 +134,6 @@ def apitag2exiftag(apitag):
         'Artist': 'Exif.Image.Artist',
         'LensSerialNumber': 'Exif.Photo.LensSerialNumber',
         'ExposureTime': 'Exif.Photo.ExposureTime',
-        'MaxApertureValue': 'Exif.Image.MaxApertureValue',
         'Copyright': 'Exif.Image.Copyright',
         'FocalLengthIn35mmFilm': 'Exif.Photo.FocalLengthIn35mmFilm',
         'GPSLatitude': 'Exif.GPSInfo.GPSLatitude',
