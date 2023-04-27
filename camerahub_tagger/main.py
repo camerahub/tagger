@@ -7,6 +7,7 @@ import os
 from fnmatch import filter as fnfilter
 import pyexiv2
 from requests.models import HTTPError
+from termcolor import cprint
 from camerahub_tagger.config import get_setting
 from camerahub_tagger.api import get_negative, get_scan, create_scan, test_credentials
 from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no
@@ -42,9 +43,9 @@ def main():
     try:
         test_credentials(server, auth)
     except:
-        print("Creds not OK")
+        cprint("Creds not OK", "red")
         raise PermissionError
-    print("Creds OK")
+    cprint("Creds OK", "green")
 
 
     # if no args, scan current folder. consider recursive option
@@ -61,7 +62,7 @@ def main():
         files = fnfilter(os.listdir('.'), '*.[Jj][Pp][Gg]')
 
     if len(files) == 0:
-        print("No files found")
+        cprint("No files found", "red")
 
     # foreach found photo:
     # read exif data, check for camerahub scan tag
@@ -101,10 +102,10 @@ def main():
             try:
                 negative = get_negative(film, frame, server, auth)
             except HTTPError as err:
-                print(err)
+                cprint(err, "red")
                 continue
             except:
-                print(f"Couldn't find Negative ID for {file}")
+                cprint(f"Couldn't find Negative ID for {file}", "red")
                 continue
             else:
                 print(f"{file} corresponds to Negative {negative}")
@@ -113,7 +114,7 @@ def main():
             try:
                 scan = create_scan(negative, file, server, auth)
             except:
-                print(f"Couldn't generate Scan ID for Negative {negative}")
+                cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
                 continue
             else:
                 print(f"Created new Scan ID {scan}")
@@ -122,7 +123,8 @@ def main():
         try:
             apidata = get_scan(scan, server, auth)
         except:
-            print(f"Couldn't retrieve data for Scan {scan}")
+            cprint(f"Couldn't retrieve data for Scan {scan}", "red")
+            continue
         else:
             print(f"Got data for Scan {scan}")
 
@@ -137,7 +139,7 @@ def main():
         # if non-zero diff, ask user to confirm tag write
         if len(diff) > 0:
             # print diff & confirm write
-            print(prettydiff)
+            cprint(prettydiff, "yellow")
 
             if not args.dry_run:
                 if args.yes or yes_or_no("Write this metadata to the file?"):
