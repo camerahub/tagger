@@ -176,3 +176,20 @@ def api2exif(l_apidata):
                 l_exifdata[exifkey] = str(value)
 
     return l_exifdata
+
+def asciiart():
+    # pylint: disable=anomalous-backslash-in-string
+    """
+    Return a fancy Ascii Art logo
+    """
+    figlet='''  ____                               _   _       _     
+ / ___|__ _ _ __ ___   ___ _ __ __ _| | | |_   _| |__  
+| |   / _` | '_ ` _ \ / _ \ '__/ _` | |_| | | | | '_ \ 
+| |__| (_| | | | | | |  __/ | | (_| |  _  | |_| | |_) |
+ \____\__,_|_| |_|_|_|\___|_|  \__,_|_| |_|\__,_|_.__/                             
+                |_   _|_ _  __ _  __ _  ___ _ __ 
+                  | |/ _` |/ _` |/ _` |/ _ \ '__|
+                  | | (_| | (_| | (_| |  __/ |   
+                  |_|\__,_|\__, |\__, |\___|_|   
+                           |___/ |___/'''
+    return figlet

@@ -10,11 +10,11 @@ from requests.models import HTTPError
 from termcolor import cprint
 from camerahub_tagger.config import get_setting
 from camerahub_tagger.api import get_negative, get_scan, create_scan, test_credentials
-from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no
+from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no, asciiart
 
 # ----------------------------------------------------------------------
 def main():
-    print("CameraHub Tagger")
+    cprint(asciiart(), 'light_blue')
 
     # Read in args
     parser = argparse.ArgumentParser()
