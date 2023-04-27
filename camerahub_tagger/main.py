@@ -4,6 +4,7 @@ CameraHub Tagger
 
 import argparse
 import os
+from pathlib import Path
 from fnmatch import filter as fnfilter
 import pyexiv2
 from requests.models import HTTPError
@@ -47,19 +48,23 @@ def main():
         raise PermissionError
     cprint("Creds OK", "green")
 
-
-    # if no args, scan current folder. consider recursive option
-    # elsif load individual frame
-    # or quit if none
-
     files = []
     if args.file:
+        # Single file supplied with -f
         files.append(args.file)
     elif args.recursive:
-        # recursive search here
-        pass
+        # Recursive from . with -r
+        purepaths = list(Path('.').rglob('*'))
+        for purepath in purepaths:
+            files.append(str(purepath))
     else:
-        files = fnfilter(os.listdir('.'), '*.[Jj][Pp][Gg]')
+        # Just search in .
+        purepaths = list(Path('.').glob('*'))
+        for purepath in purepaths:
+            files.append(str(purepath))
+
+    # Restrict file list to JPGs
+    files = fnfilter(files, '*.[Jj][Pp][Gg]')
 
     if len(files) == 0:
         cprint("No files found", "red")
