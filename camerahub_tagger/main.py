@@ -11,7 +11,7 @@ from requests.models import HTTPError
 from termcolor import cprint
 from camerahub_tagger.config import get_setting
 from camerahub_tagger.api import get_negative, get_scan, create_scan, test_credentials
-from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no, asciiart
+from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no, asciiart, print_summary
 
 # ----------------------------------------------------------------------
 def main():
@@ -69,6 +69,11 @@ def main():
     if len(files) == 0:
         cprint("No files found", "red")
 
+    # set up summary counters
+    changed = []
+    unchanged = []
+    failed = []
+
     # foreach found photo:
     # read exif data, check for camerahub scan tag
     for file in files:
@@ -108,9 +113,11 @@ def main():
                 negative = get_negative(film, frame, server, auth)
             except HTTPError as err:
                 cprint(err, "red")
+                failed.append(file)
                 continue
             except:
                 cprint(f"Couldn't find Negative ID for {file}", "red")
+                failed.append(file)
                 continue
             else:
                 print(f"{file} corresponds to Negative {negative}")
@@ -120,6 +127,7 @@ def main():
                 scan = create_scan(negative, file, server, auth)
             except:
                 cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
+                failed.append(file)
                 continue
             else:
                 print(f"Created new Scan ID {scan}")
@@ -129,6 +137,7 @@ def main():
             apidata = get_scan(scan, server, auth)
         except:
             cprint(f"Couldn't retrieve data for Scan {scan}", "red")
+            failed.append(file)
             continue
         else:
             print(f"Got data for Scan {scan}")
@@ -148,10 +157,17 @@ def main():
 
             if not args.dry_run:
                 if args.yes or yes_or_no("Write this metadata to the file?"):
+                    changed.append(file)
 
                     # Apply the diff to the image
                     with pyexiv2.Image(file) as img:
                         img.modify_exif(exifdata)
+                else:
+                    unchanged.append(file)
+        else:
+            unchanged.append(file)
+
+    print_summary(changed, unchanged, failed)
 
 if __name__ == "__main__":
     main()

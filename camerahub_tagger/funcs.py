@@ -194,3 +194,25 @@ def asciiart():
                   |_|\__,_|\__, |\__, |\___|_|   
                            |___/ |___/'''
     return figlet
+
+
+def print_summary(changed, unchanged, failed):
+    """
+    Render pretty summary output of changed files
+    """
+    if len(changed) > 0:
+        print("Changed files")
+        for item in changed:
+            cprint(f"  {item}", "green")
+    
+    if len(unchanged) > 0:
+        print("")
+        print("Unchanged files:")
+        for item in unchanged:
+            cprint(f"  {item}", "yellow")
+    
+    if len(failed) > 0:
+        print("")
+        print("Failed files:")
+        for item in failed:
+            cprint(f"  {item}", "red")
