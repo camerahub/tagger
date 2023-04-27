@@ -5,6 +5,7 @@ Functions which handle config creation and retrieval for this app
 import configparser
 import getpass
 import os
+from termcolor import cprint
 
 def create_config(path):
     """
@@ -27,21 +28,21 @@ def create_profile(l_path, l_config, l_section):
         default = "https://camerahub.info/api"
         l_server = input(f"Enter CameraHub server for profile '{l_section}' (default {default}): ") or default
     except ValueError as error:
-        print('ERROR', error)
+        cprint(error, "red")
     else:
         l_config.set(l_section, "server", l_server)
 
     try:
         l_username = input(f"Enter CameraHub username for {l_server}: ")
     except ValueError as error:
-        print('ERROR', error)
+        cprint(error, "red")
     else:
         l_config.set(l_section, "username", l_username)
 
     try:
         l_password = getpass.getpass(prompt=f"Enter CameraHub password for {l_server}: ")
     except ValueError as error:
-        print('ERROR', error)
+        cprint(error, "red")
     else:
         l_config.set(l_section, "password", l_password)
 
