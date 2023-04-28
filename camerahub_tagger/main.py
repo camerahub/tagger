@@ -5,7 +5,6 @@ CameraHub Tagger
 import argparse
 import os
 from pathlib import Path
-from fnmatch import filter as fnfilter
 import pyexiv2
 from requests.models import HTTPError
 from termcolor import cprint
@@ -49,6 +48,7 @@ def main():
     cprint("Creds OK", "green")
 
     files = []
+    imagefile = ['.jpg', '.JPG', '.jpeg', '.JPEG']
     if args.file:
         # Single file supplied with -f
         files.append(args.file)
@@ -56,15 +56,14 @@ def main():
         # Recursive from . with -r
         purepaths = list(Path('.').rglob('*'))
         for purepath in purepaths:
-            files.append(str(purepath))
+            if purepath.suffix in imagefile:
+                files.append(str(purepath))
     else:
         # Just search in .
         purepaths = list(Path('.').glob('*'))
         for purepath in purepaths:
-            files.append(str(purepath))
-
-    # Restrict file list to JPGs
-    files = fnfilter(files, '*.[Jj][Pp][Gg]')
+            if purepath.suffix in imagefile:
+                files.append(str(purepath))
 
     if len(files) == 0:
         cprint("No files found", "red")
