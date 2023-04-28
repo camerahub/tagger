@@ -79,8 +79,21 @@ def main():
         print(f"Processing image {file}")
 
         # Extract exif data from file
-        with pyexiv2.Image(file) as img:
+        try:
+            img = pyexiv2.Image(file)
+        except RuntimeError as err:
+            cprint(f"{err} when reading {file}", "red")
+            failed.append(file)
+            continue
+
+        try:
             existing = img.read_exif()
+        except UnicodeDecodeError as err:
+            cprint(f"{err} when reading {file}", "red")
+            failed.append(file)
+            continue
+
+        img.close()
 
         # Example format
         # existing = {'Exif.Image.DateTime': '2019:06:23 19:45:17', 'Exif.Image.Artist': 'TEST', 'Exif.Image.Rating': '4', ...}
