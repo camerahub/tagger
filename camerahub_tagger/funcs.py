@@ -88,7 +88,7 @@ def guess_frame(filepath):
     for example 123-22-holiday.jpg
     """
     filename = basename(filepath)
-    match = re.search(r'^(\d+)-(\w+)-.*\.jpe?g$', filename.lower())
+    match = re.search(r'^(\d+)-(\w+)-.*\.[Jj][Pp][Ee]?[Gg]$', filename)
     if match and match.group(1) and match.group(2):
         returnval = (match.group(1), match.group(2))
     else:
