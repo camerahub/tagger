@@ -101,8 +101,8 @@ def get_print(l_print, l_server, l_auth):
     """
     Get a print by ID
     """
-    payload = {'id': l_print}
-    url = l_server+'/print/'
+    payload = {'id_owner': l_print}
+    url = l_server+'/print/'+l_print
     response = requests.get(
         url,
         auth=l_auth,
@@ -112,7 +112,7 @@ def get_print(l_print, l_server, l_auth):
     response.raise_for_status()
 
     data=json.loads(response.text)
-    if data["count"] == 1:
-        print = data["results"][0]["slug"]
+    printid = data["id_owner"]
+    negative = data["negative"]["slug"]
 
-    return print
+    return printid, negative

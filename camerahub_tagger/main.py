@@ -129,11 +129,11 @@ def main():
 
                 elif guess['type'] is 'print':
                     printid = guess['print']
-                    print(f"Deduced Print ID {print}")
+                    print(f"Deduced Print ID {printid}")
 
                     # Lookup Print from API
                     try:
-                        negative = get_print(printid, server, auth)
+                        (printid, negative) = get_print(printid, server, auth)
                     except HTTPError as err:
                         cprint(err, "red")
                         failed.append(file)
@@ -145,9 +145,9 @@ def main():
                     else:
                         print(f"{file} corresponds to Print {printid}")
 
-                    # Create Scan record associated with the Negative
+                    # Create Scan record associated with the Print *and* Negative
                     try:
-                        scan = create_scan(printid=printid, filename=file, server=server, auth=auth)
+                        scan = create_scan(printid=printid, negative=negative, filename=file, server=server, auth=auth)
                     except:
                         cprint(f"Couldn't generate Scan ID for Print {printid}", "red")
                         failed.append(file)
