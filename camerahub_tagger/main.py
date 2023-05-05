@@ -137,6 +137,11 @@ def main():
             # Create Scan record associated with the Negative
             try:
                 scan = create_scan(negative, file, server, auth)
+
+                # Opportunistically write the new Scan ID to the file in case Tagger runs into problems
+                # later - otherwise the Scan ID would be lost and a new one generated next time
+                with pyexiv2.Image(file) as img:
+                    img.modify_exif({'Exif.Photo.ImageUniqueID': scan})
             except:
                 cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
                 failed.append(file)
