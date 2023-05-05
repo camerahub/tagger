@@ -73,6 +73,9 @@ def main():
     unchanged = []
     failed = []
 
+    # Disable pyexiv logging to work around issue #37
+    pyexiv2.set_log_level(4)
+
     # foreach found photo:
     # read exif data, check for camerahub scan tag
     for file in files:
