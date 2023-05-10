@@ -92,9 +92,7 @@ def main():
         try:
             existing = img.read_exif()
         except UnicodeDecodeError as err:
-            cprint(f"{err} when reading {file}", "red")
-            failed.append(file)
-            continue
+            pass
 
         img.close()
 
