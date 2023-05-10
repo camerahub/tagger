@@ -60,6 +60,10 @@ Image file to be tagged. If not supplied, tag everything in the current director
 
 CameraHub connection profile. Default: `prod`.
 
+### `-c --clear`
+
+Clear existing EXIF metadata from the image file.
+
 ## Config
 
 CameraHub Tagger needs some basic connection details to connect to CameraHub.
