@@ -147,6 +147,7 @@ def apitag2exiftag(apitag):
         'GPSLongitude': 'Exif.GPSInfo.GPSLongitude',
         'GPSLongitudeRef': 'Exif.GPSInfo.GPSLongitudeRef',
         'ImageID': 'Exif.Image.ImageID',
+        'DocumentName': 'Exif.Image.DocumentName',
     }
 
     exiftag = mapping.get(apitag)
