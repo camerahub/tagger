@@ -159,7 +159,6 @@ def main():
                     else:
                         print(f"Created new Scan ID {scan}")
 
-<<<<<<< HEAD
                 elif guess['type'] == 'print':
                     printid = guess['print']
                     print(f"Deduced Print ID {printid}")
@@ -192,22 +191,6 @@ def main():
                     # prompt user for film/frame
                     #	either accept film/frame or just film then prompt frame
                     film, frame = prompt_frame(file)
-=======
-            # Create Scan record associated with the Negative
-            try:
-                scan = create_scan(negative, file, server, auth)
-
-                # Opportunistically write the new Scan ID to the file in case Tagger runs into problems
-                # later - otherwise the Scan ID would be lost and a new one generated next time
-                with pyexiv2.Image(file) as img:
-                    img.modify_exif({'Exif.Photo.ImageUniqueID': scan})
-            except:
-                cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
-                failed.append(file)
-                continue
-            else:
-                print(f"Created new Scan ID {scan}")
->>>>>>> main
 
         # Lookup extended Scan details in API
         try:
