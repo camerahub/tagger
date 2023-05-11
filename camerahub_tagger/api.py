@@ -38,7 +38,7 @@ def create_scan(filename, server, auth, negative=None, printid=None):
     """
 
     # Only write the basename of the file
-    l_filename = basename(l_filename)
+    filename = basename(filename)
 
     # Create dict
     data = {
