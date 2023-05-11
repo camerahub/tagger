@@ -9,7 +9,7 @@ import pyexiv2
 from requests.models import HTTPError
 from termcolor import cprint
 from camerahub_tagger.config import get_setting
-from camerahub_tagger.api import get_negative, get_scan, create_scan, test_credentials
+from camerahub_tagger.api import get_negative, get_scan, create_scan, test_credentials, get_print
 from camerahub_tagger.funcs import is_valid_uuid, guess_frame, prompt_frame, api2exif, diff_tags, yes_or_no, asciiart, print_summary
 
 # ----------------------------------------------------------------------
@@ -129,44 +129,68 @@ def main():
             # else prompt user to identify the scan
             #	guess film/frame from filename
             guess = guess_frame(file)
-            if type(guess) is tuple:
-                film, frame = guess
-                print(f"Deduced Film ID {film} and Frame {frame}")
+            if type(guess) is dict:
+                if guess['type'] == 'negative':
+                    film = guess['film']
+                    frame = guess['frame']
+                    print(f"Deduced Film ID {film} and Frame {frame}")
 
-            else:
-                print(f"{file} does not match FILM-FRAME notation")
-                # prompt user for film/frame
-                #	either accept film/frame or just film then prompt frame
-                film, frame = prompt_frame(file)
+                    # Lookup Negative from API
+                    try:
+                        negative = get_negative(film, frame, server, auth)
+                    except HTTPError as err:
+                        cprint(err, "red")
+                        failed.append(file)
+                        continue
+                    except:
+                        cprint(f"Couldn't find Negative ID for {file}", "red")
+                        failed.append(file)
+                        continue
+                    else:
+                        print(f"{file} corresponds to Negative {negative}")
 
-            # Lookup Negative from API
-            try:
-                negative = get_negative(film, frame, server, auth)
-            except HTTPError as err:
-                cprint(err, "red")
-                failed.append(file)
-                continue
-            except:
-                cprint(f"Couldn't find Negative ID for {file}", "red")
-                failed.append(file)
-                continue
-            else:
-                print(f"{file} corresponds to Negative {negative}")
+                    # Create Scan record associated with the Negative
+                    try:
+                        scan = create_scan(negative=negative, filename=file, server=server, auth=auth)
+                    except:
+                        cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
+                        failed.append(file)
+                        continue
+                    else:
+                        print(f"Created new Scan ID {scan}")
 
-            # Create Scan record associated with the Negative
-            try:
-                scan = create_scan(negative, file, server, auth)
+                elif guess['type'] == 'print':
+                    printid = guess['print']
+                    print(f"Deduced Print ID {printid}")
 
-                # Opportunistically write the new Scan ID to the file in case Tagger runs into problems
-                # later - otherwise the Scan ID would be lost and a new one generated next time
-                with pyexiv2.Image(file) as img:
-                    img.modify_exif({'Exif.Photo.ImageUniqueID': scan})
-            except:
-                cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
-                failed.append(file)
-                continue
-            else:
-                print(f"Created new Scan ID {scan}")
+                    # Lookup Print from API
+                    try:
+                        (printid, negative) = get_print(printid, server, auth)
+                    except HTTPError as err:
+                        cprint(err, "red")
+                        failed.append(file)
+                        continue
+                    except:
+                        cprint(f"Couldn't find Print ID for {file}", "red")
+                        failed.append(file)
+                        continue
+                    else:
+                        print(f"{file} corresponds to Print {printid}")
+
+                    # Create Scan record associated with the Print *and* Negative
+                    try:
+                        scan = create_scan(printid=printid, negative=negative, filename=file, server=server, auth=auth)
+                    except:
+                        cprint(f"Couldn't generate Scan ID for Print {printid}", "red")
+                        failed.append(file)
+                        continue
+                    else:
+                        print(f"Created new Scan ID {scan}")
+                else:
+                    print(f"{file} does not match FILM-FRAME notation")
+                    # prompt user for film/frame
+                    #	either accept film/frame or just film then prompt frame
+                    film, frame = prompt_frame(file)
 
         # Lookup extended Scan details in API
         try:

@@ -90,9 +90,14 @@ def guess_frame(filepath):
     filename = basename(filepath)
     match = re.search(r'^(\d+)-(\w+)-.*\.[Jj][Pp][Ee]?[Gg]$', filename)
     if match and match.group(1) and match.group(2):
-        returnval = (match.group(1), match.group(2))
+        returnval = {'type': 'negative', 'film':match.group(1), 'frame':match.group(2)}
     else:
-        returnval = None
+        # try a print match
+        match = re.search(r'^P(\d+)-.*\.[Jj][Pp][Ee]?[Gg]$', filename)
+        if match and match.group(1):
+            returnval = {'type':'print', 'print':match.group(1)}
+        else:
+            returnval = None
     return returnval
 
 
@@ -142,6 +147,7 @@ def apitag2exiftag(apitag):
         'GPSLongitude': 'Exif.GPSInfo.GPSLongitude',
         'GPSLongitudeRef': 'Exif.GPSInfo.GPSLongitudeRef',
         'ImageID': 'Exif.Image.ImageID',
+        'DocumentName': 'Exif.Image.DocumentName',
     }
 
     exiftag = mapping.get(apitag)
