@@ -98,7 +98,7 @@ def main():
             #	guess film/frame from filename
             guess = guess_frame(file)
             if type(guess) is dict:
-                if guess['type'] is 'negative':
+                if guess['type'] == 'negative':
                     film = guess['film']
                     frame = guess['frame']
                     print(f"Deduced Film ID {film} and Frame {frame}")
@@ -127,7 +127,7 @@ def main():
                     else:
                         print(f"Created new Scan ID {scan}")
 
-                elif guess['type'] is 'print':
+                elif guess['type'] == 'print':
                     printid = guess['print']
                     print(f"Deduced Print ID {printid}")
 
