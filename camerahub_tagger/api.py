@@ -3,6 +3,7 @@ Functions which interact with the CameraHub API
 """
 
 from datetime import date
+from os.path import basename
 import json
 import requests
 
@@ -35,6 +36,9 @@ def create_scan(filename, server, auth, negative=None, printid=None):
         "date": null
     }
     """
+
+    # Only write the basename of the file
+    l_filename = basename(l_filename)
 
     # Create dict
     data = {

@@ -22,6 +22,7 @@ def main():
     parser.add_argument('-a', '--auto', help="Don't prompt user to identify scans, only guess based on filename", action='store_true')
     parser.add_argument('-y', '--yes', help="Accept all changes without confirmation", action='store_true')
     parser.add_argument('-d', '--dry-run', help="Don't write any tags to image files", action='store_true')
+    parser.add_argument('-c', '--clear', help="Clear existing EXIF metadata from the image file", action='store_true')
     parser.add_argument('-f', '--file', help="Image file to be tagged. If not supplied, tag everything in the current directory.", type=str)
     parser.add_argument('-p', '--profile', help="CameraHub connection profile", default='prod', type=str)
     args = parser.parse_args()
@@ -73,14 +74,45 @@ def main():
     unchanged = []
     failed = []
 
+    # Disable pyexiv logging to work around issue #37
+    pyexiv2.set_log_level(4)
+
     # foreach found photo:
     # read exif data, check for camerahub scan tag
     for file in files:
         print(f"Processing image {file}")
 
+        # Before opening the file for reading, check if we're in Clear mode
+        if args.clear:
+            try:
+                img = pyexiv2.Image(file)
+                img.clear_exif()
+            except Exception as err: # pylint: disable=broad-exception-caught
+                cprint(f"{err} when clearing {file}", "red")
+                failed.append(file)
+            else:
+                cprint(f"Cleared metadata from {file}", "yellow")
+                changed.append(file)
+            finally:
+                img.close()
+                continue
+
         # Extract exif data from file
-        with pyexiv2.Image(file) as img:
+        try:
+            img = pyexiv2.Image(file)
+        except RuntimeError as err:
+            cprint(f"{err} when reading {file}", "red")
+            failed.append(file)
+            continue
+
+        try:
             existing = img.read_exif()
+        except UnicodeDecodeError as err:
+            cprint(f"{err} when reading {file}", "red")
+            failed.append(file)
+            continue
+
+        img.close()
 
         # Example format
         # existing = {'Exif.Image.DateTime': '2019:06:23 19:45:17', 'Exif.Image.Artist': 'TEST', 'Exif.Image.Rating': '4', ...}
@@ -127,6 +159,7 @@ def main():
                     else:
                         print(f"Created new Scan ID {scan}")
 
+<<<<<<< HEAD
                 elif guess['type'] == 'print':
                     printid = guess['print']
                     print(f"Deduced Print ID {printid}")
@@ -159,6 +192,22 @@ def main():
                     # prompt user for film/frame
                     #	either accept film/frame or just film then prompt frame
                     film, frame = prompt_frame(file)
+=======
+            # Create Scan record associated with the Negative
+            try:
+                scan = create_scan(negative, file, server, auth)
+
+                # Opportunistically write the new Scan ID to the file in case Tagger runs into problems
+                # later - otherwise the Scan ID would be lost and a new one generated next time
+                with pyexiv2.Image(file) as img:
+                    img.modify_exif({'Exif.Photo.ImageUniqueID': scan})
+            except:
+                cprint(f"Couldn't generate Scan ID for Negative {negative}", "red")
+                failed.append(file)
+                continue
+            else:
+                print(f"Created new Scan ID {scan}")
+>>>>>>> main
 
         # Lookup extended Scan details in API
         try:
