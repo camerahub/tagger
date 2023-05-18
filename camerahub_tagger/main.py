@@ -22,6 +22,7 @@ def main():
     parser.add_argument('-a', '--auto', help="Don't prompt user to identify scans, only guess based on filename", action='store_true')
     parser.add_argument('-y', '--yes', help="Accept all changes without confirmation", action='store_true')
     parser.add_argument('-d', '--dry-run', help="Don't write any tags to image files", action='store_true')
+    parser.add_argument('-u', '--update-only', help="Only update tags which have previously been written", action='store_true')
     parser.add_argument('-c', '--clear', help="Clear existing EXIF metadata from the image file", action='store_true')
     parser.add_argument('-f', '--file', help="Image file to be tagged. If not supplied, tag everything in the current directory.", type=str)
     parser.add_argument('-p', '--profile', help="CameraHub connection profile", default='prod', type=str)
@@ -122,6 +123,10 @@ def main():
             # already has a uuid scan id
             print(f"{file} already has an EXIF scan ID")
             scan = existing['Exif.Photo.ImageUniqueID']
+        elif args.update_only:
+            print(f"{file} does not have an EXIF scan ID and --update-only is set, skipping")
+            unchanged.append(file)
+            continue
         else:
             # need to match it with a neg/print and generate a scan id
             print(f"{file} does not have an EXIF scan ID")
