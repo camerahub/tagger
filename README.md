@@ -52,6 +52,10 @@ Accept all changes without confirmation
 
 Don't write any tags to image files
 
+### `-d --update-only`
+
+Only update tags which have previously been written. Don't make any new Scan records in CameraHub.
+
 ### `-f --file FILE`
 
 Image file to be tagged. If not supplied, tag everything in the current directory.
