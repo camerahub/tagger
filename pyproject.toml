@@ -20,7 +20,7 @@ termcolor = "^2.3.0"
 tagger = 'camerahub_tagger.main:main'
 
 [tool.poetry.dev-dependencies]
-pylint = "^2.6.0"
+pylint = ">=3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
